@@ -7,15 +7,21 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define TEMP_WIRE_BUS 22
+//#define TEMP_WIRE_BUS 22
+#define ONE_WIRE_BUS 22
 #define DHTPIN 15 
 #define DHTTYPE DHT22 
 DHT dht(DHTPIN, DHTTYPE);
 Adafruit_BMP085 bmp;
 
-OneWire tempWire(TEMP_WIRE_BUS);           //объявили переменную датчиков
-DallasTemperature TempSensors(&tempWire);  //объявили структуру типа Даллас термометр
+//OneWire tempWire(TEMP_WIRE_BUS);           //объявили переменную датчиков
+//DallasTemperature TempSensors(&tempWire);  //объявили структуру типа Даллас термометр
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
 
+DeviceAddress sensor1 = { 0x28, 0xFF, 0x77, 0x62, 0x40, 0x17, 0x4, 0x31 };
+DeviceAddress sensor2 = { 0x28, 0xFF, 0xB4, 0x6, 0x33, 0x17, 0x3, 0x4B };
+DeviceAddress sensor3= { 0x28, 0xFF, 0xA0, 0x11, 0x33, 0x17, 0x3, 0x96 };
 
 char pressure_value[4];
 const char* wifi_name = "Tenda_31BC98"; //Your Wifi name
@@ -27,6 +33,7 @@ void setup()
   Serial.begin(115200);
   dht.begin(); 
   bmp.begin();
+  sensors.begin();
   
   // Let's connect to wifi network 
   Serial.print("Connecting to ");
@@ -87,6 +94,12 @@ void loop()
             client.print("<br/>Heat Index in fah: ");
             client.print(heat_index);
             client.print("<br/>Pressure is: ");
+            client.print(pressure_value);
+                      client.print("<br/>Temp_1: ");
+            client.print(pressure_value);
+                      client.print("<br/>Temp_2: ");
+            client.print(pressure_value);
+                      client.print("<br/>Temp_3: ");
             client.print(pressure_value);
             client.print("hpa");
             client.print("</p></body>");
