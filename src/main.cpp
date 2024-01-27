@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include <DHT.h> 
 #include <Adafruit_BMP085.h>
+#include <Wire.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
@@ -65,6 +66,10 @@ void loop()
   float fah = dht.readTemperature(true);
   float heat_index = dht.computeHeatIndex(fah, hum);
   float heat_indexC = dht.convertFtoC(heat_index);
+       sensors.requestTemperatures();  
+     float temp1 = sensors.getTempC(sensor1);  // Снимаем показания с датчика 1 и сохраняем в целочисленном виде
+     float temp2 = sensors.getTempC(sensor2);  // Снимаем показания с датчика 2 и сохраняем в целочисленном виде
+     float temp3 = sensors.getTempC(sensor3);  // Снимаем показания с датчика 3 и сохраняем в целочисленном виде
 
   WiFiClient client = server.available();   //Checking for incoming clients
 
@@ -96,11 +101,11 @@ void loop()
             client.print("<br/>Pressure is: ");
             client.print(pressure_value);
                       client.print("<br/>Temp_1: ");
-            client.print(pressure_value);
+            client.print(temp1);
                       client.print("<br/>Temp_2: ");
-            client.print(pressure_value);
+            client.print(temp2);
                       client.print("<br/>Temp_3: ");
-            client.print(pressure_value);
+            client.print(temp3);
             client.print("hpa");
             client.print("</p></body>");
         
